@@ -1,5 +1,5 @@
 ---
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   annotations: {}
@@ -8,15 +8,15 @@ metadata:
   name: sealed-secrets-key-admin
   namespace: kube-system
 rules:
-- apiGroups:
-  - ""
-  resources:
-  - secrets
-  verbs:
-  - create
-  - list
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+    verbs:
+      - create
+      - list
 ---
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   annotations: {}
@@ -28,11 +28,11 @@ roleRef:
   kind: ClusterRole
   name: secrets-unsealer
 subjects:
-- kind: ServiceAccount
-  name: sealed-secrets-controller
-  namespace: kube-system
+  - kind: ServiceAccount
+    name: sealed-secrets-controller
+    namespace: kube-system
 ---
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   annotations: {}
@@ -40,36 +40,36 @@ metadata:
     name: secrets-unsealer
   name: secrets-unsealer
 rules:
-- apiGroups:
-  - bitnami.com
-  resources:
-  - sealedsecrets
-  verbs:
-  - get
-  - list
-  - watch
-- apiGroups:
-  - bitnami.com
-  resources:
-  - sealedsecrets/status
-  verbs:
-  - update
-- apiGroups:
-  - ""
-  resources:
-  - secrets
-  verbs:
-  - get
-  - create
-  - update
-  - delete
-- apiGroups:
-  - ""
-  resources:
-  - events
-  verbs:
-  - create
-  - patch
+  - apiGroups:
+      - bitnami.com
+    resources:
+      - sealedsecrets
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - bitnami.com
+    resources:
+      - sealedsecrets/status
+    verbs:
+      - update
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+    verbs:
+      - get
+      - create
+      - update
+      - delete
+  - apiGroups:
+      - ""
+    resources:
+      - events
+    verbs:
+      - create
+      - patch
 ---
 apiVersion: v1
 kind: Service
@@ -81,13 +81,13 @@ metadata:
   namespace: kube-system
 spec:
   ports:
-  - port: 8080
-    targetPort: 8080
+    - port: 8080
+      targetPort: 8080
   selector:
     name: sealed-secrets-controller
   type: ClusterIP
 ---
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   annotations: {}
@@ -100,11 +100,11 @@ roleRef:
   kind: Role
   name: sealed-secrets-service-proxier
 subjects:
-- apiGroup: rbac.authorization.k8s.io
-  kind: Group
-  name: system:authenticated
+  - apiGroup: rbac.authorization.k8s.io
+    kind: Group
+    name: system:authenticated
 ---
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   annotations: {}
@@ -113,18 +113,18 @@ metadata:
   name: sealed-secrets-service-proxier
   namespace: kube-system
 rules:
-- apiGroups:
-  - ""
-  resourceNames:
-  - 'http:sealed-secrets-controller:'
-  - sealed-secrets-controller
-  resources:
-  - services/proxy
-  verbs:
-  - create
-  - get
+  - apiGroups:
+      - ""
+    resourceNames:
+      - "http:sealed-secrets-controller:"
+      - sealed-secrets-controller
+    resources:
+      - services/proxy
+    verbs:
+      - create
+      - get
 ---
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   annotations: {}
@@ -137,9 +137,9 @@ roleRef:
   kind: Role
   name: sealed-secrets-key-admin
 subjects:
-- kind: ServiceAccount
-  name: sealed-secrets-controller
-  namespace: kube-system
+  - kind: ServiceAccount
+    name: sealed-secrets-controller
+    namespace: kube-system
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -177,33 +177,33 @@ spec:
         name: sealed-secrets-controller
     spec:
       containers:
-      - args: []
-        command:
-        - controller
-        env: []
-        image: quay.io/bitnami/sealed-secrets-controller:v0.13.1
-        imagePullPolicy: Always
-        livenessProbe:
-          httpGet:
-            path: /healthz
-            port: http
-        name: sealed-secrets-controller
-        ports:
-        - containerPort: 8080
-          name: http
-        readinessProbe:
-          httpGet:
-            path: /healthz
-            port: http
-        securityContext:
-          readOnlyRootFilesystem: true
-          runAsNonRoot: true
-          runAsUser: 1001
-        stdin: false
-        tty: false
-        volumeMounts:
-        - mountPath: /tmp
-          name: tmp
+        - args: []
+          command:
+            - controller
+          env: []
+          image: quay.io/bitnami/sealed-secrets-controller:v0.17.3
+          imagePullPolicy: Always
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+          name: sealed-secrets-controller
+          ports:
+            - containerPort: 8080
+              name: http
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+          securityContext:
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 1001
+          stdin: false
+          tty: false
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp
       imagePullSecrets: []
       initContainers: []
       securityContext:
@@ -211,14 +211,16 @@ spec:
       serviceAccountName: sealed-secrets-controller
       terminationGracePeriodSeconds: 30
       volumes:
-      - emptyDir: {}
-        name: tmp
+        - emptyDir: {}
+          name: tmp
 ---
-apiVersion: apiextensions.k8s.io/v1beta1
+apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: sealedsecrets.bitnami.com
 spec:
+  conversion:
+    strategy: None
   group: bitnami.com
   names:
     kind: SealedSecret
@@ -226,7 +228,18 @@ spec:
     plural: sealedsecrets
     singular: sealedsecret
   scope: Namespaced
-  subresources:
-    status: {}
-  version: v1alpha1
-
+  versions:
+    - name: v1alpha1
+      schema:
+        openAPIV3Schema:
+          properties:
+            spec:
+              type: object
+              x-kubernetes-preserve-unknown-fields: true
+            status:
+              x-kubernetes-preserve-unknown-fields: true
+          type: object
+      served: true
+      storage: true
+      subresources:
+        status: {}
