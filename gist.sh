@@ -187,7 +187,7 @@ kubectl --namespace argocd \
 
 export PASS=$(kubectl \
     --namespace argocd \
-    get secret argocd-initial-admin-secret \
+    get secret argocd-secret \
     --output jsonpath="{.data.password}" \
     | base64 --decode)
 
@@ -197,6 +197,8 @@ argocd login \
     --password $PASS \
     --grpc-web \
     argo-cd.$BASE_HOST
+
+# argocd login argocd-server-argocd.apps-crc.testing --sso
 
 argocd account update-password \
     --current-password $PASS \
@@ -267,4 +269,4 @@ kubectl argo rollouts \
     get rollout argo-combined-app \
     --watch
 
-open http://argo-combined-app.$ISTIO_HOST.nip.io
+open http:robinsmedberg/agronod-openshift-gitops.$ISTIO_HOST.nip.io

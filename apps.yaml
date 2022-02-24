@@ -1,5 +1,4 @@
 ---
-
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -10,7 +9,7 @@ metadata:
 spec:
   project: production
   source:
-    repoURL: https://github.com//argo-combined-demo.git
+    repoURL: https://github.com/robinsmedberg/agronod-openshift-gitops.git
     targetRevision: HEAD
     path: production
   destination:
@@ -22,7 +21,6 @@ spec:
       prune: true
 
 ---
-
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -33,7 +31,7 @@ metadata:
 spec:
   project: staging
   source:
-    repoURL: https://github.com//argo-combined-demo.git
+    repoURL: https://github.com/robinsmedberg/agronod-openshift-gitops.git
     targetRevision: HEAD
     path: staging
   destination:
@@ -44,5 +42,4 @@ spec:
       selfHeal: true
       prune: true
     syncOptions:
-    - CreateNamespace=true
-
+      - CreateNamespace=true

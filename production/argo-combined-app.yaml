@@ -9,11 +9,11 @@ spec:
   project: production
   source:
     path: kustomize/overlays/production
-    repoURL: https://github.com//argo-combined-app
+    repoURL: https://github.comrobinsmedberg/agronod-openshift-gitops
     targetRevision: HEAD
     kustomize:
       images:
-      - /argo-combined-app:latest
+        - /argo-combined-app:latest
   destination:
     server: https://kubernetes.default.svc
     namespace: production
@@ -22,5 +22,4 @@ spec:
       selfHeal: true
       prune: true
     syncOptions:
-    - CreateNamespace=true
-
+      - CreateNamespace=true
