@@ -9,7 +9,7 @@ spec:
   project: staging
   source:
     path: kustomize/overlays/staging
-    repoURL: https://github.comrobinsmedberg/agronod-openshift-gitops
+    repoURL: https://github.com/robinsmedberg/agronod-openshift-gitops
     targetRevision: HEAD
     kustomize:
       images:

@@ -9,7 +9,7 @@ spec:
   project: production
   source:
     path: kustomize/overlays/production
-    repoURL: https://github.comrobinsmedberg/agronod-openshift-gitops
+    repoURL: https://github.com/robinsmedberg/agronod-openshift-gitops
     targetRevision: HEAD
     kustomize:
       images:
