@@ -1,5 +1,4 @@
 ---
-
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
@@ -10,19 +9,18 @@ metadata:
 spec:
   description: Production project
   sourceRepos:
-  - '*'
+    - "*"
   destinations:
-  - namespace: '*'
-    server: https://kubernetes.default.svc
+    - namespace: "*"
+      server: https://kubernetes.default.svc
   clusterResourceWhitelist:
-  - group: '*'
-    kind: '*'
+    - group: "*"
+      kind: "*"
   namespaceResourceWhitelist:
-  - group: '*'
-    kind: '*'
+    - group: "*"
+      kind: "*"
 
 ---
-
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
@@ -33,13 +31,13 @@ metadata:
 spec:
   description: Staging project
   sourceRepos:
-  - '*'
+    - "*"
   destinations:
-  - namespace: '*'
-    server: https://kubernetes.default.svc
+    - namespace: "*"
+      server: https://kubernetes.default.svc
   clusterResourceWhitelist:
-  - group: '*'
-    kind: '*'
+    - group: "*"
+      kind: "*"
   namespaceResourceWhitelist:
-  - group: '*'
-    kind: '*'
+    - group: "*"
+      kind: "*"
